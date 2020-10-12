@@ -1,0 +1,20 @@
+version: "3.8"
+
+services: 
+  bootstrap-registry:
+    container_name: bootstrap-registry
+    build:
+      context: .
+      target: bootstrap-registry
+  registry-builder:
+    container_name: registry-builder
+    depends_on: [ bootstrap-registry ]
+    build:
+      context: .
+      target: registry-builder
+    environment:
+      - DOCKER_USERNAME=docker
+      - DOCKER_PASSWORD=docker
+    volumes:
+      - //var/run/docker.sock://var/run/docker.sock
+      - .://tmp/context
